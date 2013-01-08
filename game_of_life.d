@@ -52,7 +52,6 @@ pushGeneration(int[][] field, int size)
 		{
 			for (int c=0; c<global_columns; c++)
 			{
-
 				int z =  global_history[(size-a)-1][b][c];
 				global_history[(size-a)][b][c] = z;
 			}
@@ -64,9 +63,7 @@ pushGeneration(int[][] field, int size)
 	for (int d=0; d<global_rows; d++)
 	{
 		for (int e=0; e<global_columns; e++)
-		{
-			global_history[0][d][e] = field[d][e];
-		}
+			{ global_history[0][d][e] = field[d][e]; }
 	}	
 }
 
@@ -80,10 +77,9 @@ checkHistory(int[][] field, int size)
 	layer = size-1;		/* compensate for starting at 0 */
 	
 	while (layer >= 0)
-	{
-		if (global_history[layer][][] == field){return layer;}else{layer--;}
-	}
+		{ if (global_history[layer][][] == field){return layer;}else{layer--;} }
 	
+	/* Only when no layer has been found */
 	return (-1);
 }
 
@@ -103,34 +99,24 @@ printField(int[][] field)
 
 	for (int i=0; i<=(global_rows + 1); i++)
 	{
-		
 		for (int k=0; k<=(global_columns + 1); k++)
 		{
 			if ((i == 0) || (i == (global_rows + 1)))
-			{
-				write("-");
-			}
+				{ write("-"); }
 			else if ((k == 0) || (k == (global_columns + 1)))
-			{
-				write("|");
-			}
+				{ write("|"); }
 			else
 			{
 				/* Distinguish between "dead" (0) and "living" (1) cells */
 
 				if (field[i-1][k-1] == 0)
-				{
-					write(" ");	/* It's dead, Jim! */
-				}
+					{ write(" ");	/* It's dead, Jim! */ }
 				else
-				{
-					write("X");	/* It's alive! */
-				}
+					{ write("X");	/* It's alive! */ }
 			}
 		}
 
 		writefln("");
-
 	}
 
 	writef("Generation: %d", global_generations);
@@ -176,9 +162,7 @@ computeNextGeneration(int[][] oldField)
 	for (int i=0; i<global_rows; i++)		/* I am not sure wether this is actually necessary */
 	{
 		for (int j=0; j<global_columns; j++)
-		{
-			nextGen[i][j] = 0;	
-		}
+			{ nextGen[i][j] = 0; }
 	}
 
 	for (int a=0; a<global_rows; a++)
@@ -191,28 +175,18 @@ computeNextGeneration(int[][] oldField)
 			if (oldField[a][b] == 0)	/* used to be dead and ... */
 			{
 				if (count == 3)
-				{
-					nextGen[a][b] = 1;	/* ... becomes alive! */
-				}
+					{ nextGen[a][b] = 1; }	/* ... becomes alive! */
 				else
-				{
-					nextGen[a][b] = 0;	/* ... stayes dead! */				
-				}
+					{ nextGen[a][b] = 0; }	/* ... stayes dead! */				
 			}
 			else				/* used to be alive and ... */
 			{
 				if (count < 2)
-				{
-					nextGen[a][b] = 0;	/* ... dies of loneliness! */
-				}
+					{ nextGen[a][b] = 0; }	/* ... dies of loneliness! */
 				else if (count > 3)
-				{
-					nextGen[a][b] = 0;	/* ... dies of overpopulation! */				
-				}
+					{ nextGen[a][b] = 0; }	/* ... dies of overpopulation! */				
 				else
-				{
-					nextGen[a][b] = 1;	/* ... stayes alive! */				
-				}
+					{ nextGen[a][b] = 1; }	/* ... stayes alive! */				
 			}
 		}
 	}
@@ -250,9 +224,7 @@ placeNextGeneration(int[][] nextField)
 	for (int i=0; i<global_rows; i++)
 	{
 		for (int j=0; j<global_columns; j++)
-		{
-			global_field[i][j] = nextField[i][j];
-		}
+			{ global_field[i][j] = nextField[i][j]; }
 	}
 }
 
@@ -293,9 +265,7 @@ main(string[] args)
 
 	/* Fill the history */
 	for (int q=0; q<10; q++)
-	{
-		pushGeneration(global_field, global_history_size);
-	}
+		{ pushGeneration(global_field, global_history_size); }
 
 	/* Input Glider */
 	/*
@@ -377,7 +347,10 @@ main(string[] args)
 	while (loop)
 	{
 		placeNextGeneration(computeNextGeneration(global_field));
-		if (!(generations_freeze)) {global_generations++;}		/* Do not keep counting generations if we have a stable or oscillating state */
+		
+		if (!(generations_freeze)) 
+			{ global_generations++; }		/* Do not keep counting generations if we have a stable or oscillating state */
+		
 		printField(global_field);
 		
 		Thread.sleep(dur!("msecs")(global_interval_length));
